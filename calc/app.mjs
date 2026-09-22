@@ -305,6 +305,9 @@ $('pickItem').onclick = () => {
 
 // ------------------------------------------------------------- what a page cannot promise, said plainly
 
+//the download starts on its own; the dialog has said what it had to say, so it goes
+$('trustApp').onclick = () => $('trustDlg').close();
+
 $('trustGoOn').onclick = () => {
   $('trustDlg').close();
   $('foldersDlg').showModal();

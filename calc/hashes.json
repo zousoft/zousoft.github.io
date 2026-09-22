@@ -1,11 +1,11 @@
 {
   "files": {
-    "app.mjs": "6167f85fce4b4cff572a4bfa0eabfa119bd662eeaf00e9a026e941bccfaaf152",
+    "app.mjs": "fde5709d2c99adadebe82fc9c2a221d513d20da526ec09cd0710d50725504d8c",
     "calc.mjs": "b2de33bc27e82d8b27926256ddd5d999555cee9b009735b787282896c5076f84",
     "edit.mjs": "63798485e8d06091a4c1358b2ba7c95d8f4fab72ce6cba55bb9153f02f9ab481",
-    "i18n.mjs": "b7cf80f86774664cb306ae44cec4b86be53439f94990623d30e49b41f2ae1b7d",
+    "i18n.mjs": "a9ba89a2bc9a11c2b83c566ff45163a3f8761908c3df0f8f80b21a9598df2edb",
     "icon.png": "08cad3c8136764919cd38844a8d8f3a657377d4e1edf8d74dab59ff2bba5177c",
-    "index.html": "f14ba35b5a75cb142fb7fc1765dc75350ec6c302b8e887b0f391ccf4409bf27b",
+    "index.html": "c9d5feb277d1c98ca07f14a734f6d1486cea969f2fb4de518c171e89a2c89015",
     "kdf-worker.mjs": "f777f915f60bf4777672b84b43bb6b6a4ab20c3f6d2938eb79fec52a9c158087",
     "manifest.json": "3e94614ce9e31c2a842a5d031effccf376bf32a1ec753f61beb7f29ff90e000b",
     "sw.js": "da3cf7016722a1c3351c9a345873153da0ca0bb22b11288679646d6351d65063",
@@ -27,5 +27,5 @@
     "vendor/sqljs/sql-wasm.js": "f1c84000dbc856c9d87f4f3aabc4d3654bd436165db4be3da13751db3a9c20d7",
     "vendor/sqljs/sql-wasm.wasm": "38c14f6e379210bc942bdc4ebca44e7bfdb4318ecc1c72ca666a28fdce96670a"
   },
-  "manifest": "5e426b792378b7a5595b966af9b0187512d0f44fd2e4b75ade0f6688ff35c758"
+  "manifest": "e51a26fa2da75e1e6a76a1a032808ae5d40b8755147581476e5089606ac32d7b"
 }

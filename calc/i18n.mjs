@@ -9,7 +9,7 @@ const STRINGS = {
   en: {
     calc_title: 'Calculator',
     vault_title: 'Vault',
-    common_version: 'Version 1.4.0, build 2026/07/18',
+    common_version: 'Version 1.5.0, build 2026/09/22',
     common_copyright: '© ZOUSOFT.COM 2026. All RIGHTS RESERVED.',
     common_ok: 'OK',
     calc_invalid_input: 'Invalid input',
@@ -120,7 +120,7 @@ const STRINGS = {
   zh: {
     calc_title: '计算器',
     vault_title: '保险柜',
-    common_version: '版本 1.4.0, 发布日期 2026/07/18',
+    common_version: '版本 1.5.0, 发布日期 2026/09/22',
     common_copyright: '© ZOUSOFT.COM 2026. 版权所有。',
     common_ok: '确定',
     calc_invalid_input: '算式不正确',
