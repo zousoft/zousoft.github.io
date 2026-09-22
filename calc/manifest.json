@@ -1,0 +1,13 @@
+{
+  "name": "Calculator",
+  "short_name": "Calculator",
+  "description": "A calculator.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0E1620",
+  "theme_color": "#17212C",
+  "icons": [
+    { "src": "./icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}

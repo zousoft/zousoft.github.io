@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<!-- Nothing is fetched from anywhere else, and nothing may be sent anywhere: connect-src 'self' is what a
+     page that leaks a password would have to break. wasm-unsafe-eval is for sql.js, blob: for the pictures
+     and videos decrypted in the page. frame-ancestors is ignored in a meta tag, so a host should send it. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none';
+  script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:;
+  media-src 'self' blob:; connect-src 'self'; worker-src 'self'; font-src 'self'; manifest-src 'self';
+  base-uri 'none'; form-action 'none'; object-src 'none'">
+<title>Calculator</title>
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" href="./icon.png"> <!-- the app's own icon, as the About dialog shows it -->
+<style>
+  :root { --bg:#0E1620; --surface:#17212C; --hi:#1F2C3A; --line:#2A3B4D; --txt:#E6EDF3; --dim:#93A4B4;
+          --accent:#2DD4BF; --err:#F87171; --success:#34D399; --warning:#FBBF24;
+          --radius:14px; --key:#212121; --keypad:#000; }
+  * { box-sizing: border-box; }
+  [hidden] { display:none !important; } /* a rule with display beats the browser's own [hidden] otherwise */
+  /* the page fills the window: the header on top, everything else below it, scrolling only when it must */
+  html, body { height:100%; }
+  body { margin:0; background:var(--bg); color:var(--txt); font:15px/1.5 system-ui, -apple-system, sans-serif;
+         display:flex; flex-direction:column; }
+  /* the app's app bar: the menu on the left, the title in the middle, what belongs to the page on the right */
+  header { background:var(--surface); padding:12px 8px; position:sticky; top:0; z-index:2;
+           display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:8px; }
+  header h1 { font-size:17px; margin:0; font-weight:600; text-align:center; }
+  header .side { display:flex; align-items:center; gap:8px; min-width:0; }
+  header .side.right { justify-content:flex-end; }
+  header .side .dim { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .icon { background:none; border:0; color:var(--txt); font-size:22px; line-height:1; padding:6px 10px; border-radius:10px; cursor:pointer; }
+  .icon:hover { background:var(--hi); }
+  main { padding:16px; max-width:1200px; margin:0 auto; width:100%; flex:1; min-height:0; overflow:auto;
+         display:flex; flex-direction:column; scrollbar-width:thin; scrollbar-color:var(--line) transparent; }
+  /* a vault's grid uses the whole window, as the app's does; only the calculator keeps its own width */
+  main:has(#vaultCard:not([hidden])) { max-width:none; }
+
+  /* the calculator: the app's own, expression on top, the live result dimmed below, then the keyboard */
+  /* the app's proportions: the expression on top, the keyboard 9 rows of 56px (504) at most 500 wide,
+     sitting at the bottom of the window as the app's keyboard does */
+  /* one box holds the whole calculator: the expression, the result under it, and the keyboard at its foot */
+  /* the box fills the height; the keyboard keeps its own size at the foot of it and the expression sits
+     just above the keys, where a calculator's display is, with the room to grow above it */
+  /* The app's own shape, 25:48 -- the Windows window is 545x1035 and a phone is about the same. It keeps that
+     shape whatever the window does: centred when there is room, scrolled when the window is too short, and
+     never squashed, so the keys stay the size they are in the app. 640px is the floor: display plus keyboard. */
+  #calc { width:100%; max-width:500px; aspect-ratio:25 / 48; min-height:640px; margin:auto; flex:none;
+          display:flex; flex-direction:column;
+          border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; }
+  /* no box around it: the caret is always in it, so there is nothing to point out */
+  #display { padding:14px 18px 2px; display:flex; align-items:center; gap:10px; flex:none; cursor:text; }
+  #pwd { flex:1; background:none; border:0; color:var(--txt); font-size:26px; outline:none; font-family:inherit; min-width:0; }
+  #acBtn { background:none; border:0; color:var(--accent); font-size:20px; font-weight:600; cursor:pointer; padding:4px 2px; }
+  #result { padding:8px 18px 16px; color:var(--dim); font-size:32px; font-weight:300; text-align:right;
+            min-height:52px; cursor:pointer; overflow:hidden; flex:none; }
+  #calcTop { flex:1; min-height:0; cursor:text; } /* the empty room below: a click there types too */
+  #keys { background:var(--keypad); padding:4px; flex:none; margin-top:auto;
+          display:flex; flex-direction:column; border-top:1px solid var(--line); }
+  .krow { display:flex; flex:none; height:56px; } /* the app's own row height, whatever the window does */
+  .krow button { flex:2; background:none; color:#fff; border:0; margin:1px; border-radius:8px; padding:6px 0;
+                 font-size:28px; line-height:1.2; cursor:pointer; font-family:inherit; }
+  .krow button.tex, .krow button.submit { font-size:22px; } /* as the app draws them */
+  .krow button.hi { background:var(--key); }
+  .krow button.submit { background:var(--accent); color:#04201c; font-weight:700; } /* one key wide, as the app has it */
+  /* the key that swaps the calculator's keys for the letters: writing, not something to type */
+  .krow button.layout { background:#37474F; font-style:italic; font-family:Georgia, 'Times New Roman', serif;
+                        font-size:22px; }
+  .krow button.on { background:var(--accent); color:#04201c; } /* shift, while it is on */
+  .krow button:active { filter:brightness(1.4); }
+  .krow sup, .krow sub { font-size:14px; }
+  .frac { display:inline-flex; flex-direction:column; line-height:1; font-size:14px; vertical-align:middle; }
+  .frac span:first-child { border-bottom:1px solid #fff; padding-bottom:1px; }
+  /* a root's bar runs over what is under it, as the app's TeX draws it */
+  .krow .rad { display:inline-block; border-top:1px solid #fff; line-height:1.15; padding:0 3px;
+               margin-left:-2px; vertical-align:-2px; }
+  .krow sup.idx { font-size:11px; margin-right:-4px; vertical-align:6px; }
+  /* About */
+  dialog#about { background:var(--surface); color:var(--txt); border:1px solid var(--line); border-radius:var(--radius);
+                 padding:0; max-width:min(440px, 92vw); }
+  dialog#about::backdrop { background:rgba(0,0,0,.6); }
+  #aboutTop { text-align:center; padding:22px 22px 12px; }
+  #aboutTop img { border-radius:18px; display:block; margin:0 auto 8px; }
+  #aboutTop .name { font-size:20px; font-weight:600; }
+  #aboutTop .ver, #aboutTop .rights { color:var(--dim); font-size:12px; }
+  #aboutBody { padding:0 22px 8px; }
+  #aboutBody p { margin:10px 0; font-size:14px; }
+  #aboutBody b { font-weight:600; }
+  #aboutFoot { display:flex; justify-content:center; padding:8px 16px 16px; }
+  #aboutFoot button { background:none; border:0; color:var(--accent); font:inherit; font-weight:600;
+                      padding:8px 14px; border-radius:10px; cursor:pointer; }
+  #aboutFoot button:hover { background:var(--hi); }
+  #toast { position:fixed; left:50%; top:16px; transform:translateX(-50%); background:var(--surface); color:var(--txt);
+           border:1px solid var(--line); border-radius:10px; padding:8px 14px; z-index:9; font-size:14px;
+           max-width:min(520px, 92vw); text-align:center; }
+
+  /* the menu */
+  #menu, #sortMenu, #sizeMenu { position:absolute; top:52px; background:var(--surface); border-radius:var(--radius); padding:8px; min-width:min(360px, 92vw); box-shadow:0 12px 40px rgba(0,0,0,.5); z-index:3; }
+  #menu { left:8px; }
+  #sortMenu, #sizeMenu { right:8px; min-width:180px; }
+  #sizeBtn .big { font-size:20px; } #sizeBtn .small { font-size:13px; } /* the app's format_size icon */
+  .item { display:flex; gap:10px; align-items:center; padding:12px; border-radius:10px; cursor:pointer; }
+  .item:hover { background:var(--hi); }
+  .item .what { flex:1; }
+  .item .sub { color:var(--dim); font-size:12px; word-break:break-all; }
+  .item > span:first-child { font-size:19px; line-height:1.2; width:26px; text-align:center; flex:none; }
+  .item .icon.drop { font-size:20px; padding:2px 8px; color:var(--dim); }
+  .item .icon.drop:hover { color:var(--txt); }
+  #folderList:empty { display:none; }
+  .line { border:0; border-top:1px solid var(--line); margin:6px 10px; }
+
+  /* the menu a long press or a right click opens on an item, as the app's does */
+  #ctxMenu { position:fixed; background:var(--surface); border-radius:var(--radius); padding:6px; z-index:5;
+             min-width:220px; box-shadow:0 12px 40px rgba(0,0,0,.6); }
+  #ctxMenu .item { padding:10px 12px; }
+  #ctxMenu .item .what { font-size:14px; }
+  .tile.picked { outline:2.5px solid var(--accent); outline-offset:-3px; }
+  .tile .tick { position:absolute; top:6px; right:6px; width:24px; height:24px; border-radius:50%;
+                border:2px solid #fff; background:rgba(0,0,0,.35); display:flex; align-items:center;
+                justify-content:center; font-size:14px; color:#04201c; }
+  .tile.picked .tick { background:var(--accent); }
+  .tile.cut { opacity:.45; }
+
+  /* a question or a note, in the app's shape */
+  dialog.ask { background:var(--surface); color:var(--txt); border:1px solid var(--line);
+               border-radius:var(--radius); padding:0; max-width:min(440px, 92vw); }
+  dialog.ask::backdrop { background:rgba(0,0,0,.6); }
+  .ask h2 { font-size:17px; margin:0; padding:18px 20px 6px; }
+  .ask .body { padding:0 20px 8px; font-size:14px; color:var(--txt); }
+  .ask .body .pre { white-space:pre-wrap; } /* only a plain message keeps its own line breaks */
+  .ask .body dl { display:grid; grid-template-columns:auto 1fr; gap:6px 14px; margin:0; }
+  .ask .body dt { color:var(--dim); }
+  .ask .body dd { margin:0; word-break:break-all; }
+  .ask .body .sub { color:var(--dim); font-size:13px; margin:0 0 12px; }
+  #foldersDlg #folderList .item { background:var(--bg); margin-bottom:6px; }
+  #foldersDlg { max-width:min(560px, 94vw); }
+  .ask input { width:100%; margin-top:10px; background:var(--bg); border:1px solid var(--line); border-radius:8px;
+               color:var(--txt); font:inherit; padding:10px; }
+  .ask .buttons { display:flex; justify-content:flex-end; gap:6px; padding:10px 14px 16px; }
+  .ask .buttons button { background:none; border:0; color:var(--accent); font:inherit; font-weight:600;
+                         padding:8px 14px; border-radius:10px; cursor:pointer; }
+  .ask .buttons button:hover, .ask .buttons a:hover { background:var(--hi); }
+  .ask .buttons a { color:var(--accent); font-weight:600; padding:8px 14px; border-radius:10px;
+                    text-decoration:none; }
+
+  /* the buttons along the bottom of a vault, as the app has them */
+  #bottomBar { display:flex; background:var(--surface); border-top:1px solid var(--line); flex:none; }
+  #bottomBar button { flex:1; background:none; border:0; color:var(--txt); font:inherit; font-size:12px;
+                      padding:8px 4px 10px; cursor:pointer; display:flex; flex-direction:column;
+                      align-items:center; gap:3px; }
+  #bottomBar button:hover:not(:disabled) { background:var(--hi); }
+  #bottomBar button:disabled { opacity:.35; cursor:default; }
+  #bottomBar .glyph { font-size:20px; line-height:1; }
+  #bottomBar .green { color:var(--success); } #bottomBar .orange { color:var(--warning); }
+  #bottomBar .red { color:var(--err); }
+
+  /* the vault */
+  .path { display:flex; gap:6px; align-items:center; margin-bottom:12px; color:var(--dim); flex-wrap:wrap; }
+  .path a { color:var(--accent); cursor:pointer; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(140px, 1fr)); gap:10px; }
+  .tile { background:var(--hi); border-radius:10px; overflow:hidden; cursor:pointer; position:relative; aspect-ratio:1; }
+  .tile:focus-visible { outline:2px solid var(--accent); }
+  .tile img { width:100%; height:100%; object-fit:cover; display:block; }
+  body.no-labels .tile:not(.dir) .label { display:none; }
+  .tile .label { position:absolute; inset:auto 0 0 0; padding:4px 8px; font-size:12px; background:linear-gradient(transparent, rgba(0,0,0,.8)); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .tile .badge { position:absolute; top:6px; right:6px; background:rgba(0,0,0,.6); border-radius:6px; padding:1px 6px; font-size:12px; }
+  .tile.dir { display:flex; align-items:center; justify-content:center; font-size:46px; }
+
+  /* one photo or video */
+  #viewer { position:fixed; inset:0; background:rgba(0,0,0,.96); display:none; flex-direction:column; z-index:4; }
+  #viewer.open { display:flex; }
+  #viewerTop { display:flex; gap:12px; align-items:center; padding:12px 16px; }
+  #viewerTop .name { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  #viewerBody { flex:1; display:flex; align-items:center; justify-content:center; min-height:0; padding:0 56px; }
+  #viewerBody img, #viewerBody video { max-width:100%; max-height:100%; }
+  .edge { position:absolute; top:50%; transform:translateY(-50%); background:rgba(0,0,0,.45); color:var(--txt); border:0;
+          font-size:30px; line-height:1; padding:14px 12px; border-radius:12px; cursor:pointer; }
+  .edge:hover:not(:disabled) { background:rgba(0,0,0,.7); }
+  .edge:disabled { color:#44566a; cursor:default; }
+  #prevBtn { left:8px; } #nextBtn { right:8px; }
+
+  .dim { color:var(--dim); font-size:13px; }
+  .err { color:var(--err); font-size:13px; }
+  .row { display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+  @media (max-width:600px) { main { padding:10px; } #viewerBody { padding:0 48px; } }
+</style>
+</head>
+<body>
+<header>
+  <span class="side"><button class="icon" id="menuBtn" data-i18n-title="menu" aria-label="Menu">&#9776;</button></span>
+  <h1 id="title" data-i18n="calc_title">Calculator</h1>
+  <span class="side right">
+    <span class="dim" id="where"></span>
+    <button class="icon" id="sortBtn" data-i18n-title="sort" aria-label="Sort" hidden>&#8693;</button>
+    <button class="icon" id="sizeBtn" data-i18n-title="image_size" aria-label="Size" hidden>
+      <span class="big">A</span><span class="small">A</span></button>
+  </span>
+</header>
+
+<div id="sortMenu" hidden></div>
+<div id="sizeMenu" hidden></div>
+
+<div id="menu" hidden>
+  <div class="item" id="pickItem">
+    <span>&#128193;</span>
+    <span class="what"><div data-i18n="calc_data_locations">Data folders...</div></span>
+  </div>
+  <input type="file" id="pickInput" webkitdirectory hidden>
+  <div class="item" id="namesItem" hidden>
+    <span id="namesMark">&#10003;</span>
+    <span class="what"><div data-i18n="show_file_names">Show file names</div>
+      <div class="sub" data-i18n="show_file_names_sub">the name over each photo and video</div></span>
+  </div>
+  <hr class="line">
+  <div class="item" id="aboutItem">
+    <span>&#9432;</span>
+    <span class="what"><div data-i18n="common_about">About...</div></span>
+  </div>
+  <div class="item" id="exitItem" hidden>
+    <span>&#9099;</span>
+    <span class="what"><div data-i18n="vault_drawer_exit_vault">Exit vault</div></span>
+  </div>
+</div>
+
+<dialog id="about">
+  <div id="aboutTop">
+    <img src="./icon.png" alt="" width="84" height="84">
+    <div class="name" data-i18n="calc_title">Calculator</div>
+    <div class="ver" data-i18n="common_version">Version 1.4.0, build 2026/07/18</div>
+    <div class="rights" data-i18n="common_copyright">&copy; ZOUSOFT.COM 2026. All RIGHTS RESERVED.</div>
+  </div>
+  <div id="aboutBody"></div>
+  <div id="aboutFoot"><button id="aboutClose" data-i18n="common_ok">OK</button></div>
+</dialog>
+
+<div id="ctxMenu" hidden></div>
+
+<dialog class="ask" id="trustDlg">
+  <h2 data-i18n="trust_title"></h2>
+  <div class="body">
+    <p data-i18n="trust_what"></p>
+    <p data-i18n="trust_app"></p>
+  </div>
+  <div class="buttons">
+    <a id="trustApp" href="../" data-i18n="trust_app_btn"></a>
+    <button id="trustGoOn" data-i18n="trust_go_on"></button>
+  </div>
+</dialog>
+
+<dialog class="ask" id="foldersDlg">
+  <h2 data-i18n="data_loc_title">Data folders</h2>
+  <div class="body">
+    <p class="sub" data-i18n="data_loc_hint"></p>
+    <div id="folderList"></div>
+  </div>
+  <div class="buttons">
+    <button id="addFolderBtn" data-i18n="data_loc_add">Add a data folder...</button>
+    <button id="foldersClose" data-i18n="common_ok">OK</button>
+  </div>
+</dialog>
+
+<dialog class="ask" id="ask">
+  <h2 id="askTitle"></h2>
+  <div class="body" id="askBody"></div>
+  <div class="buttons">
+    <button id="askCancel" data-i18n="common_cancel">Cancel</button>
+    <button id="askOk" data-i18n="common_ok">OK</button>
+  </div>
+</dialog>
+
+<div id="toast" hidden></div>
+
+<main>
+  <section id="calc">
+    <div id="display">
+      <input id="pwd" type="text" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Calculator">
+      <button id="acBtn" title="Clear">AC</button>
+    </div>
+    <div id="result" title="Tap to copy"></div>
+    <div id="calcTop"></div>
+    <div id="keys"></div>
+  </section>
+
+  <section id="vaultCard" hidden style="margin-bottom:auto">
+    <div class="row" style="justify-content:space-between; margin-bottom:8px">
+      <div class="path" id="path"></div>
+      <span class="dim" id="count"></span>
+    </div>
+    <div class="grid" id="grid"></div>
+  </section>
+</main>
+
+<div id="bottomBar" hidden>
+  <button id="btnDecrypt"><span class="glyph orange">&#128275;</span><span data-i18n="vault_btn_decrypt">Decrypt</span></button>
+  <button id="btnDelete"><span class="glyph red">&#128465;</span><span data-i18n="vault_btn_delete">Delete</span></button>
+  <button id="btnRefresh"><span class="glyph green">&#8635;</span><span data-i18n="vault_btn_refresh">Refresh</span></button>
+</div>
+
+<div id="viewer">
+  <div id="viewerTop">
+    <span class="name" id="viewerName"></span>
+    <span class="dim" id="viewerInfo"></span>
+    <button class="icon" id="closeBtn" data-i18n-title="close">&times;</button>
+  </div>
+  <div id="viewerBody"></div>
+  <button class="edge" id="prevBtn" data-i18n-title="previous">&#8249;</button>
+  <button class="edge" id="nextBtn" data-i18n-title="next">&#8250;</button>
+</div>
+
+<script src="./vendor/sqljs/sql-wasm.js"></script>
+<script type="module" src="./app.mjs"></script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+{
+  "files": {
+    "app.mjs": "6167f85fce4b4cff572a4bfa0eabfa119bd662eeaf00e9a026e941bccfaaf152",
+    "calc.mjs": "b2de33bc27e82d8b27926256ddd5d999555cee9b009735b787282896c5076f84",
+    "edit.mjs": "63798485e8d06091a4c1358b2ba7c95d8f4fab72ce6cba55bb9153f02f9ab481",
+    "i18n.mjs": "78e77a4fa2be9a602c45465ef8652a050a36b01efcd435be1343637f8ba78f5b",
+    "icon.png": "08cad3c8136764919cd38844a8d8f3a657377d4e1edf8d74dab59ff2bba5177c",
+    "index.html": "d752ea6582c01ec24164107d10eb45fddb2e40345c7241e6452ff05727e3ee37",
+    "kdf-worker.mjs": "f777f915f60bf4777672b84b43bb6b6a4ab20c3f6d2938eb79fec52a9c158087",
+    "manifest.json": "3e94614ce9e31c2a842a5d031effccf376bf32a1ec753f61beb7f29ff90e000b",
+    "sw.js": "da3cf7016722a1c3351c9a345873153da0ca0bb22b11288679646d6351d65063",
+    "vault.mjs": "37f83f1a91fa81bcb83531a275cd2d4d380d1ecb0daa82416548be845b9afd05",
+    "vendor/noble-ciphers/LICENSE": "f36671a5487c9c5050efacb58011c37c24c55a889803cb036cf9d9a6347c1e2d",
+    "vendor/noble-ciphers/_arx.js": "ead142ba410404c0698bb80e0d6f77780799bb77a9e3b098cf0f9fca1c486e37",
+    "vendor/noble-ciphers/_poly1305.js": "5d2afd73b40dbafb7b6740c6e6388e7123c79a4e57306861b28c5734925fa84d",
+    "vendor/noble-ciphers/chacha.js": "5f1c00575e227b75163f4bac50b79442dec50ee3047c46c18887808ba8af0a69",
+    "vendor/noble-ciphers/utils.js": "a443ec1f60d1aaa25d1b7d8c102d33c0e8e6d683ada1ad17be9c32e69170ff95",
+    "vendor/noble-hashes/LICENSE": "4f221aee6e072336700c408c68ab3b96a3fc09f6aebe6f48f1bd99e5ef13faec",
+    "vendor/noble-hashes/_blake.js": "cabbff61d1f373bac45594ad758df7c42e176464ddbb94b44f5533fa977a4f56",
+    "vendor/noble-hashes/_md.js": "60cf3010fda89e3e4d3f0e7ff1ce249e9c467f34b4fd41b6fd6101d9f69be763",
+    "vendor/noble-hashes/_u64.js": "b09da8c07fe8187c07649494cdb7cd0bcf13df90b506a9473d19e4d5f8c2e102",
+    "vendor/noble-hashes/argon2.js": "f39753324bdf2f484150731d24b1d71236f26bf10bedd594f7d190fcdfdefdc9",
+    "vendor/noble-hashes/blake2.js": "03f00237bcc0b4d822a80f7c0ac22e42632c48e246c3b6da584e6452186e32f0",
+    "vendor/noble-hashes/sha2.js": "471746bba6ec4c6238ca41358d1d3b40b6ff31cf3363f0b4d550c649c1a8e83b",
+    "vendor/noble-hashes/utils.js": "037ad49adb78168b6b699598fd33f85f7877456b1d28b4d032e2a1a16807947c",
+    "vendor/sqljs/LICENSE": "60a3f6e4d7b29b4321359e683b36cf198d24f58e24582070f56e6fa89d5ee2be",
+    "vendor/sqljs/sql-wasm.js": "f1c84000dbc856c9d87f4f3aabc4d3654bd436165db4be3da13751db3a9c20d7",
+    "vendor/sqljs/sql-wasm.wasm": "38c14f6e379210bc942bdc4ebca44e7bfdb4318ecc1c72ca666a28fdce96670a"
+  },
+  "manifest": "2565d17bbeb0cb69a9f3946900c254423287f94843d82f98bcf4ec2c4a3c5722"
+}
