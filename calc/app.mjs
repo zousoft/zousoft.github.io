@@ -489,6 +489,12 @@ $('pwd').onkeydown = (e) => {
   if (e.key === 'Enter') submit();
 };
 
+//A phone carries the calculator's own keys on the page, so the system keyboard is only in the way:
+//it hides half of them, and it offers characters the calculator has no key for. inputmode="none"
+//keeps it shut in Chrome; a field that takes no typing of its own keeps it shut everywhere else --
+//the keys write into it themselves. Anything with a real pointer has a real keyboard, and keeps it.
+if (!matchMedia('(any-pointer: fine)').matches) $('pwd').readOnly = true;
+
 //the result is copied when it is tapped, as in the app
 $('result').onclick = async () => {
   const result = $('result').textContent;

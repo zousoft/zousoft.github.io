@@ -44,10 +44,11 @@
   /* one box holds the whole calculator: the expression, the result under it, and the keyboard at its foot */
   /* the box fills the height; the keyboard keeps its own size at the foot of it and the expression sits
      just above the keys, where a calculator's display is, with the room to grow above it */
-  /* The app's own shape, 25:48 -- the Windows window is 545x1035 and a phone is about the same. It keeps that
-     shape whatever the window does: centred when there is room, scrolled when the window is too short, and
-     never squashed, so the keys stay the size they are in the app. 640px is the floor: display plus keyboard. */
-  #calc { width:100%; max-width:500px; aspect-ratio:25 / 48; min-height:640px; margin:auto; flex:none;
+  /* The app's shape, less two rows of keys (112px at the full width) of the empty room above the display:
+     a browser window is wider and shorter than a phone, and that room was doing nothing. It keeps the shape
+     whatever the window does: centred when there is room, scrolled when the window is too short, and never
+     squashed, so the keys stay the size they are in the app. 640px is the floor: display plus keyboard. */
+  #calc { width:100%; max-width:500px; aspect-ratio:25 / 42.4; min-height:640px; margin:auto; flex:none;
           display:flex; flex-direction:column;
           border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; }
   /* no box around it: the caret is always in it, so there is nothing to point out */
@@ -275,7 +276,7 @@
 <main>
   <section id="calc">
     <div id="display">
-      <input id="pwd" type="text" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Calculator">
+      <input id="pwd" type="text" inputmode="none" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Calculator">
       <button id="acBtn" title="Clear">AC</button>
     </div>
     <div id="result" title="Tap to copy"></div>
