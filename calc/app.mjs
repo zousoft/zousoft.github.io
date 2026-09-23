@@ -313,6 +313,12 @@ $('trustGoOn').onclick = () => {
   $('foldersDlg').showModal();
 };
 
+//having read it, whoever would rather not goes no further: no folder is asked for
+$('trustCancel').onclick = () => {
+  $('trustDlg').close();
+  keepCaret();
+};
+
 
 $('foldersClose').onclick = () => {
   $('foldersDlg').close();
