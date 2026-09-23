@@ -5,7 +5,7 @@
     "edit.mjs": "63798485e8d06091a4c1358b2ba7c95d8f4fab72ce6cba55bb9153f02f9ab481",
     "i18n.mjs": "a9ba89a2bc9a11c2b83c566ff45163a3f8761908c3df0f8f80b21a9598df2edb",
     "icon.png": "08cad3c8136764919cd38844a8d8f3a657377d4e1edf8d74dab59ff2bba5177c",
-    "index.html": "3759c75f3554140d70c7db1e656c6fcfa6558e3ac00064ef1155464e5126f3bc",
+    "index.html": "434bc864af47773605aaaf356bef19d234ccadd931d470764469270527a3272a",
     "kdf-worker.mjs": "f777f915f60bf4777672b84b43bb6b6a4ab20c3f6d2938eb79fec52a9c158087",
     "manifest.json": "3e94614ce9e31c2a842a5d031effccf376bf32a1ec753f61beb7f29ff90e000b",
     "sw.js": "da3cf7016722a1c3351c9a345873153da0ca0bb22b11288679646d6351d65063",
@@ -27,5 +27,5 @@
     "vendor/sqljs/sql-wasm.js": "f1c84000dbc856c9d87f4f3aabc4d3654bd436165db4be3da13751db3a9c20d7",
     "vendor/sqljs/sql-wasm.wasm": "38c14f6e379210bc942bdc4ebca44e7bfdb4318ecc1c72ca666a28fdce96670a"
   },
-  "manifest": "9fc609736221df330b974b33fb62aeb20a34c47eaf44b7a78b785ac8eb839820"
+  "manifest": "452b354dfec82de47c6d2cbd69082df4db9f1cc2773654e50b1cf42334caee36"
 }
