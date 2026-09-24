@@ -7272,7 +7272,7 @@ without express or implied warranty.
 GNU LGPL / GPL
 ==============================================================================
 
-Used by: FriBidi, libmpv (video playback), libplacebo, mpv, SoX Resampler, uchardet
+Used by: FriBidi, libmpv (video playback), mpv, SoX Resampler, uchardet
 
 Copyright (c) 1991-1999 Free Software Foundation, Inc.
 Copyright (C) <year>  <name of author>
@@ -9518,14 +9518,6 @@ Public License instead of this License.  But first, please read
 
 ------------------------------------------------------------------------------
 
-Used by: libmpv (video playback), OpenAL Soft
-
-OpenAL Soft is licensed under the GNU Library General Public License, version 2 or later; this app uses
-it under version 2.1 (the GNU Lesser General Public License), as that license allows. Its text is in the
-"libmpv (video playback)" entry.
-
-------------------------------------------------------------------------------
-
 Used by: libmpv (video playback)
 
 Deep Ocean plays video with libmpv (lib/<abi>/libmpv.so), a shared library the app loads at run time.
@@ -9545,10 +9537,8 @@ GPL-only code (mpv -Dgpl=false, FFmpeg --disable-gpl --disable-nonfree --enable-
 The build scripts that produce it, with every version above pinned, are at
 https://github.com/media-kit/libmpv-android-video-build (tag v1.1.7).
 
-Source code. The complete corresponding source code of the LGPL-licensed libraries above is available
-from the addresses listed, at the versions listed. For at least three years from the date you received
-this app, ZOUSOFT will also provide a copy of that source code on request, for no more than the cost of
-supplying it: contact ZOUSOFT through https://www.zousoft.com.
+Source code. The complete source code of the LGPL-licensed libraries above, at the versions listed, and
+the build scripts and patches that produced libmpv.so, are at https://www.zousoft.com/calc/opensource/
 
 Replacing the library. libmpv.so is a separate shared library. You may replace it with a modified
 version built from the source above, and you may reverse-engineer this app as far as needed to debug
@@ -9565,14 +9555,14 @@ the build media-kit/libmpv-win32-video-build 2023-09-24 (mpv v0.36.0-403-g652a1d
 WITHOUT any GPL-only code (mpv -Dgpl=false, FFmpeg --disable-gpl --disable-nonfree --enable-version3).
 It contains:
 
-  mpv                      GNU LGPL 2.1 or later     https://github.com/mpv-player/mpv
-  FFmpeg                   GNU LGPL 3.0 or later     https://ffmpeg.org
-  libplacebo               GNU LGPL 2.1 or later     https://code.videolan.org/videolan/libplacebo
-  FriBidi                  GNU LGPL 2.1 or later     https://github.com/fribidi/fribidi
-  SoX Resampler (soxr)     GNU LGPL 2.1 or later     https://sourceforge.net/projects/soxr/
-  uchardet                 GNU LGPL 2.1 or later (of its MPL/GPL/LGPL choice)
-                                                     https://www.freedesktop.org/wiki/Software/uchardet/
+  mpv          commit 652a1dd907 (v0.36.0-403)  GNU LGPL 2.1 or later   https://github.com/mpv-player/mpv
+  FFmpeg       n6.0                             GNU LGPL 3.0 or later   https://ffmpeg.org
+  FriBidi      1.0.13                           GNU LGPL 2.1 or later   https://github.com/fribidi/fribidi
+  SoX Resampler (soxr) 0.1.3                    GNU LGPL 2.1 or later   https://gitlab.com/shinchiro/soxr
+  uchardet     commit ab1d2f1120                GNU LGPL 2.1 or later (of its MPL/GPL/LGPL choice)
+                                                                       https://www.freedesktop.org/wiki/Software/uchardet/
   libass                   ISC                       https://github.com/libass/libass
+  MuJS                     ISC                       https://mujs.com
   FreeType                 FreeType License          https://freetype.org
   HarfBuzz                 MIT ("Old MIT")           https://github.com/harfbuzz/harfbuzz
   Fontconfig               MIT-style                 https://www.freedesktop.org/wiki/Software/fontconfig/
@@ -9594,19 +9584,16 @@ It contains:
   libbs2b                  MIT                       https://bs2b.sourceforge.net
   AMF headers              MIT                       https://github.com/GPUOpen-LibrariesAndSDKs/AMF
   nv-codec-headers         MIT                       https://github.com/FFmpeg/nv-codec-headers
-  OpenAL Soft              GNU LGPL 2.0 or later     https://openal-soft.org
   zimg                     WTFPL                     https://github.com/sekrit-twc/zimg
   XZ Utils (liblzma)       public domain / 0BSD      https://tukaani.org/xz/
   bzip2                    bzip2 License             https://sourceware.org/bzip2/
   zlib                     zlib License              https://zlib.net
 
-The build scripts that produce it, with every version pinned, are at
-https://github.com/media-kit/libmpv-win32-video-build (release 2023-09-24).
+The build scripts that produce it are at
+https://github.com/media-kit/libmpv-win32-video-build (release 2023-09-24, scripts as of commit f5a6f879c9).
 
-Source code. The complete corresponding source code of the LGPL-licensed libraries above is available
-from the addresses listed. For at least three years from the date you received this app, ZOUSOFT will
-also provide a copy of that source code on request, for no more than the cost of supplying it: contact
-ZOUSOFT through https://www.zousoft.com.
+Source code. The complete source code of the LGPL-licensed libraries above, at the versions listed, and
+the build scripts that produced libmpv-2.dll, are at https://www.zousoft.com/calc/opensource/
 
 Replacing the library. libmpv-2.dll is a separate dynamic library next to deep_ocean.exe. You may
 replace it with a modified version built from the source above, and you may reverse-engineer this app as
@@ -9684,6 +9671,22 @@ Used by: icu, include, json
 
 @copyright Copyright (c) 2008-2009 Bjoern Hoehrmann <bjoern@hoehrmann.de>
 @sa http://bjoern.hoehrmann.de/utf-8/decoder/dfa/
+
+------------------------------------------------------------------------------
+
+Used by: libass, libmpv (video playback), MuJS
+
+libass: Copyright (C) 2006-2016 libass contributors
+MuJS: Copyright (c) 2013-2023 Artifex Software, Inc.
+
+Permission to use, copy, modify, and distribute this software for any purpose with or without fee is
+hereby granted, provided that the above copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE
+INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE
+FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS
+OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING
+OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 ------------------------------------------------------------------------------
 
@@ -9854,39 +9857,6 @@ PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 Adobe Author(s): Michiharu Ariza
 ifndef HB_OT_CFF_COMMON_HH
 define HB_OT_CFF_COMMON_HH
-
-------------------------------------------------------------------------------
-
-Used by: harfbuzz
-
-Copyright (c) 2007 Chris Wilson.
-Copyright (c) 2009-2010 Red Hat, Inc.
-Copyright (c) 2011-2012 Google, Inc.
-
-This is part of HarfBuzz, a text shaping library.
-
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in
-all copies of this software.
-
-IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE TO ANY PARTY FOR
-DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN
-IF THE COPYRIGHT HOLDER HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH
-DAMAGE.
-
-THE COPYRIGHT HOLDER SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING,
-BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
-FITNESS FOR A PARTICULAR PURPOSE.  THE SOFTWARE PROVIDED HEREUNDER IS
-ON AN "AS IS" BASIS, AND THE COPYRIGHT HOLDER HAS NO OBLIGATION TO
-PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
-Contributor(s):
-Chris Wilson <chris@chris-wilson.co.uk>
-Red Hat Author(s): Behdad Esfahbod
-Google Author(s): Behdad Esfahbod
 
 ------------------------------------------------------------------------------
 
@@ -12880,6 +12850,39 @@ ON AN "AS IS" BASIS, AND THE COPYRIGHT HOLDER HAS NO OBLIGATION TO
 PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 Red Hat Author(s): Owen Taylor, Behdad Esfahbod
+Google Author(s): Behdad Esfahbod
+
+------------------------------------------------------------------------------
+
+Used by: harfbuzz
+
+Copyright (c) 2007 Chris Wilson.
+Copyright (c) 2009-2010 Red Hat, Inc.
+Copyright (c) 2011-2012 Google, Inc.
+
+This is part of HarfBuzz, a text shaping library.
+
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the
+above copyright notice and the following two paragraphs appear in
+all copies of this software.
+
+IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE TO ANY PARTY FOR
+DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN
+IF THE COPYRIGHT HOLDER HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH
+DAMAGE.
+
+THE COPYRIGHT HOLDER SPECIFICALLY DISCLAIMS ANY WARRANTIES, INCLUDING,
+BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+FITNESS FOR A PARTICULAR PURPOSE.  THE SOFTWARE PROVIDED HEREUNDER IS
+ON AN "AS IS" BASIS, AND THE COPYRIGHT HOLDER HAS NO OBLIGATION TO
+PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+Contributor(s):
+Chris Wilson <chris@chris-wilson.co.uk>
+Red Hat Author(s): Behdad Esfahbod
 Google Author(s): Behdad Esfahbod
 
 ------------------------------------------------------------------------------

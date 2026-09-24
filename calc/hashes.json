@@ -5,9 +5,9 @@
     "edit.mjs": "63798485e8d06091a4c1358b2ba7c95d8f4fab72ce6cba55bb9153f02f9ab481",
     "i18n.mjs": "f20ae4a69cd8640be6f4c4b8bf696b95ca42e32aebef1378cfba5ac8d5d00500",
     "icon.png": "08cad3c8136764919cd38844a8d8f3a657377d4e1edf8d74dab59ff2bba5177c",
-    "index.html": "b01090db2e73d4ce269eb96230e539702d34f9dda07f6b30f1898b94d370fc05",
+    "index.html": "6e4ef0538821037ea47bf38a57e01b34ae34f835c110c2c9ad1ffa80f1f124a2",
     "kdf-worker.mjs": "f777f915f60bf4777672b84b43bb6b6a4ab20c3f6d2938eb79fec52a9c158087",
-    "license.txt": "565c41bc794543f79784aaede757f8a7c814f2214dd6a9733ad2d7c43fab3858",
+    "license.txt": "e0682aae1a53b4d8e1220139d0609c55186a6981ffcec60d1213f1157890852a",
     "manifest.json": "3e94614ce9e31c2a842a5d031effccf376bf32a1ec753f61beb7f29ff90e000b",
     "sw.js": "da3cf7016722a1c3351c9a345873153da0ca0bb22b11288679646d6351d65063",
     "vault.mjs": "37f83f1a91fa81bcb83531a275cd2d4d380d1ecb0daa82416548be845b9afd05",
@@ -28,5 +28,5 @@
     "vendor/sqljs/sql-wasm.js": "f1c84000dbc856c9d87f4f3aabc4d3654bd436165db4be3da13751db3a9c20d7",
     "vendor/sqljs/sql-wasm.wasm": "38c14f6e379210bc942bdc4ebca44e7bfdb4318ecc1c72ca666a28fdce96670a"
   },
-  "manifest": "8a3a0c4e79c9fb7528a65555acd31f4db838e189c36a1060cf70bec707e8048f"
+  "manifest": "4a070cfb522c8d67004456b3c506e223f6537ba182b23f7058f5615e16316d70"
 }
