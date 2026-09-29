@@ -33,6 +33,9 @@
   header .side .dim { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .icon { background:none; border:0; color:var(--txt); font-size:22px; line-height:1; padding:6px 10px; border-radius:10px; cursor:pointer; }
   .icon:hover { background:var(--hi); }
+  /* the zousoft.com logo in the top-right corner, a link back to the main site */
+  header .side.right .home { display:inline-flex; align-items:center; padding:6px 8px; text-decoration:none; }
+  header .side.right .home img { width:22px; height:22px; display:block; border-radius:4px; }
   main { padding:16px; max-width:1200px; margin:0 auto; width:100%; flex:1; min-height:0; overflow:auto;
          display:flex; flex-direction:column; scrollbar-width:thin; scrollbar-color:var(--line) transparent; }
   /* a vault's grid uses the whole window, as the app's does; only the calculator keeps its own width */
@@ -198,6 +201,7 @@
     <button class="icon" id="sortBtn" data-i18n-title="sort" aria-label="Sort" hidden>&#8693;</button>
     <button class="icon" id="sizeBtn" data-i18n-title="image_size" aria-label="Size" hidden>
       <span class="big">A</span><span class="small">A</span></button>
+    <a class="home" href="/" title="zousoft.com" aria-label="zousoft.com home"><img src="./favicon.ico" alt="zousoft.com" width="22" height="22"></a>
   </span>
 </header>
 
